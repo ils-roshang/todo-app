@@ -14,18 +14,18 @@ steps:
       - "${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}"
 
   # Step 3: Deploy to Cloud Run
-- name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-  entrypoint: "gcloud"
-  args:
-    - "run"
-    - "deploy"
-    - "${_SERVICE_NAME}"
-    - "--image=${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}"
-    - "--region=${_REGION}"
-    - "--platform=managed"
-    - "--service-account=${_SERVICE_ACCOUNT}"
-    - "--allow-unauthenticated"
-    - "--set-env-vars=DB_USER=${_DB_USER},DB_PASS=${_DB_PASS},DB_NAME=${_DB_NAME},CLOUD_SQL_CONNECTION_NAME=${_CLOUD_SQL_CONNECTION_NAME}"
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "gcloud"
+    args:
+      - "run"
+      - "deploy"
+      - "${_SERVICE_NAME}"
+      - "--image=${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}"
+      - "--region=${_REGION}"
+      - "--platform=managed"
+      - "--service-account=${_SERVICE_ACCOUNT}"
+      - "--allow-unauthenticated"
+      - "--set-env-vars=DB_USER=${_DB_USER},DB_PASS=${_DB_PASS},DB_NAME=${_DB_NAME},CLOUD_SQL_CONNECTION_NAME=${_CLOUDSQL_CONNECTION_NAME}"
 
 images:
   - "${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}"
@@ -40,7 +40,6 @@ substitutions:
   _IMAGE_NAME: 'todo-app'
   _SERVICE_NAME: 'todo-app'
   _SERVICE_ACCOUNT: "roshang@sureel-test.iam.gserviceaccount.com"
-  # Uncomment when connecting to Cloud SQL
   _CLOUDSQL_CONNECTION_NAME: 'sureel-test:us-central1:todo-app-db'
   _DB_USER: 'root'
   _DB_PASS: 'Todo-app12345'

@@ -1,18 +1,17 @@
-# Use official nginx image
-FROM nginx:alpine
+FROM node:18
 
-# Remove default nginx html content
-RUN rm -rf /usr/share/nginx/html/*
+WORKDIR /app
 
-# Copy EVERYTHING from project into nginx html directory
-COPY . /usr/share/nginx/html
+# Copy backend
+COPY backend/package*.json ./backend/
+RUN cd backend && npm install --production
 
-# Cloud Run requires service to listen on PORT env
-# Update nginx to use port 8080 instead of default 80
-RUN sed -i 's/listen       80;/listen       8080;/' /etc/nginx/conf.d/default.conf
+COPY backend ./backend
 
-# Expose port
+# Copy frontend
+COPY frontend ./frontend
+
 EXPOSE 8080
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start single express server that serves both
+CMD ["node", "backend/server.js"]
